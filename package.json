@@ -1,0 +1,30 @@
+{
+  "name": "betwise-",
+  "version": "1.0.0",
+  "description": "Sports Betting Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chachi444/BetWise.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chachi444/BetWise/issues"
+  },
+  "homepage": "https://github.com/Chachi444/BetWise#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.14.3",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+  
+}
