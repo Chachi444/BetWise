@@ -18,3 +18,21 @@ Milestone 1: User Setup & Game Management
 
 
 3.Define User, Game schemas.
+
+
+Milestone 2: Betting Logic
+
+
+
+
+
+1.Users place bets on available games.
+
+
+
+2.Create Bet schema.
+
+
+
+3.Deduct stake from wallet and record bet.
+
