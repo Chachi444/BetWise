@@ -36,3 +36,27 @@ Milestone 2: Betting Logic
 
 3.Deduct stake from wallet and record bet.
 
+
+
+
+
+Main Features:
+
+Admin creates games and odds
+Users place bets, view results
+Payout based on outcomes
+Schemas:
+
+User info, wallet balance
+Game teams, odds, result
+Bet user, game, outcome, stake, payout
+Endpoints:
+
+POST /auth/register
+POST /auth/login
+POST /games (admin)
+GET /games
+POST /bets
+GET /bets
+PATCH /games/:id/result
+GET /wallet
