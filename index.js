@@ -1,14 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+dotenv.config(); // <-- Make sure this is called right after requiring dotenv
 const Auth = require("./authModel");
-dotenv.config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Wallet = require("./walletModel");
 const Bet = require("./betModel");
 const Game = require("./gameModel");
 const app = express();
+const nodemailer = require("nodemailer");
+const { sendForgotPasswordEmail, validEmail } = require("./sendMail");
 
 //authentication middleware
 function authMiddleware(req, res, next) {
@@ -92,7 +94,7 @@ app.post("/sign-up", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // new user creation to database 
+    // new user creation to database
     const newUser = new Auth({
       email,
       username,
@@ -135,7 +137,6 @@ app.post("/sign-up", async (req, res) => {
     });
   }
 });
-
 
 // Get all users
 app.get("/users", async (req, res) => {
@@ -198,6 +199,57 @@ app.post("/login", async (req, res) => {
   });
 });
 
+// forget password
+
+app.post("/forgot-password", async (req, res) => {
+  const { email} = req.body;
+
+  const user = await Auth.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  // Send the user a mail with the token
+
+  const accessToken = jwt.sign(
+    {user},
+    process.env.ACCESS_TOKEN,
+    { expiresIn: "10m" },
+  )
+  
+
+  await sendForgotPasswordEmail(email, accessToken)// <-- Send the email with the token
+
+  // Send OTP to the user
+
+  res.status(200).json({ message: "Check Your mail"});
+}
+);
+
+
+app.patch("/reset-password", async (req, res) => { 
+
+  const { email, password } = req.body; 
+
+  const user = await Auth.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  user.password = hashedPassword;
+  await user.save();
+
+  res.status(200).json({ message: "Password reset successfully" });
+
+})
+
+  
+
+
 // Getting all wallets
 app.get("/wallets", async (req, res) => {
   try {
@@ -224,7 +276,7 @@ app.post("/create-games", authMiddleware, async (req, res) => {
     }
     if (!teams || !Array.isArray(teams) || teams.length < 2) {
       return res.status(400).json({ message: "Invalid or missing teams" });
-    }
+    }  
     if (!odds || typeof odds !== "number") {
       return res.status(400).json({ message: "Invalid or missing odds" });
     }
@@ -280,7 +332,6 @@ app.post("/create-games", authMiddleware, async (req, res) => {
   }
 });
 
-
 // Get all games
 app.get("/games", async (req, res) => {
   try {
@@ -292,7 +343,6 @@ app.get("/games", async (req, res) => {
       .json({ message: "Error fetching games", error: error.message });
   }
 });
-
 
 // Create a bet
 app.post("/create-bet", authMiddleware, async (req, res) => {
@@ -349,7 +399,7 @@ app.post("/create-bet", authMiddleware, async (req, res) => {
       error: error.message,
     });
   }
-}); 
+});
 
 // Get all bets
 app.get("/bets", authMiddleware, async (req, res) => {

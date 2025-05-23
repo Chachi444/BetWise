@@ -32,13 +32,12 @@ Milestone 1: User Setup & Game Management
 
 
 
-2.Create Bet schema. (Done)
+3.Create Bet schema. (Done)
 
 
 
-3.Deduct stake from wallet and record bet.
+4.Deduct stake from wallet and record bet.
 
-Payout based on outcomes
 
 
 Schemas:
