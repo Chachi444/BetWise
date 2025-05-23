@@ -14,13 +14,13 @@ const betSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    odds: {
-      type: Number,
+    betType: {
+      type: String,
       required: true,
     },
     potentialWinnings: {
       type: Number,
-      required: true,
+      default: 0,
     },
     betStatus: {
       type: String,
