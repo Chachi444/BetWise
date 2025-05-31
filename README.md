@@ -1,6 +1,8 @@
 # BetWise 
 Sports Betting Platform
 
+## Main Features:
+
 
 Milestone 1: Project 5 - Sports Betting Platform (BetWise)
 Assigned
@@ -37,6 +39,25 @@ Milestone 1: User Setup & Game Management
 
 
 4.Deduct stake from wallet and record bet.
+
+
+# MILESTONE 3 - PROJECT 5: Sports Betting Platform (BetWise)
+Assigned
+
+# Results & Payouts
+
+
+
+Admin sets game results. 
+
+
+Calculate payouts and update wallets.
+
+
+GET endpoints for viewing bet history and results.
+
+
+
 
 
 

@@ -132,7 +132,7 @@ app.post("/sign-up", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      message: "Error connecting to MongoDB",
+      message: "Error completing sign up",
       error: error.message,
     });
   }
@@ -174,7 +174,7 @@ app.post("/login", async (req, res) => {
 
   //Generate a token (verifying users before they can access account)
   const access_token = jwt.sign({ id: user?._id }, process.env.ACCESS_TOKEN, {
-    expiresIn: "10m",
+    expiresIn: "9h",
   });
 
   //Generate a refresh token (verifying users before they can access account)
@@ -202,7 +202,7 @@ app.post("/login", async (req, res) => {
 // forget password
 
 app.post("/forgot-password", async (req, res) => {
-  const { email} = req.body;
+  const { email } = req.body;
 
   const user = await Auth.findOne({ email });
 
@@ -212,25 +212,19 @@ app.post("/forgot-password", async (req, res) => {
 
   // Send the user a mail with the token
 
-  const accessToken = jwt.sign(
-    {user},
-    process.env.ACCESS_TOKEN,
-    { expiresIn: "10m" },
-  )
-  
+  const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN, {
+    expiresIn: "10m",
+  });
 
-  await sendForgotPasswordEmail(email, accessToken)// <-- Send the email with the token
+  await sendForgotPasswordEmail(email, accessToken); // <-- Send the email with the token
 
   // Send OTP to the user
 
-  res.status(200).json({ message: "Check Your mail"});
-}
-);
+  res.status(200).json({ message: "Check Your mail" });
+});
 
-
-app.patch("/reset-password", async (req, res) => { 
-
-  const { email, password } = req.body; 
+app.patch("/reset-password", async (req, res) => {
+  const { email, password } = req.body;
 
   const user = await Auth.findOne({ email });
 
@@ -244,11 +238,7 @@ app.patch("/reset-password", async (req, res) => {
   await user.save();
 
   res.status(200).json({ message: "Password reset successfully" });
-
-})
-
-  
-
+});
 
 // Getting all wallets
 app.get("/wallets", async (req, res) => {
@@ -262,8 +252,38 @@ app.get("/wallets", async (req, res) => {
   }
 });
 
+// get a user wallet
+app.get("/wallets/:walletId", async (req, res) => {
+  try {
+    const wallet = await Wallet.findById(req.params.walletId);
+    if (!wallet) {
+      return res.status(404).json({ message: "Wallet not found" });
+    }
+    res.status(200).json({ message: "Wallet details", wallet });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching wallet details", error: error.message });
+  }
+});
+
+// Get wallet of a logged in user
+app.get("/my-wallet", authMiddleware, async (req, res) => {
+  try {
+    const wallet = await Wallet.findOne({ userId: req.user.id });
+    if (!wallet) {
+      return res.status(404).json({ message: "Wallet not found" });
+    }
+    res.status(200).json({ message: "Wallet details", wallet });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching wallet", error: error.message });
+  }
+});
+
 //Create games with odds
-app.post("/create-games", authMiddleware, async (req, res) => {
+app.post("/create-game", authMiddleware, async (req, res) => {
   try {
     const { sportName, gameType, teams, odds, gameDate, gameTime } = req.body;
 
@@ -276,7 +296,7 @@ app.post("/create-games", authMiddleware, async (req, res) => {
     }
     if (!teams || !Array.isArray(teams) || teams.length < 2) {
       return res.status(400).json({ message: "Invalid or missing teams" });
-    }  
+    }
     if (!odds || typeof odds !== "number") {
       return res.status(400).json({ message: "Invalid or missing odds" });
     }
@@ -316,6 +336,7 @@ app.post("/create-games", authMiddleware, async (req, res) => {
       odds,
       gameDate,
       gameTime,
+      adminId: req.user.id,
     });
 
     await newGame.save();
@@ -344,10 +365,122 @@ app.get("/games", async (req, res) => {
   }
 });
 
+// Admin sets game results.
+
+// Update game results
+app.patch("/set-game-results/:gameId", authMiddleware, async (req, res) => {
+  try {
+    const { gameId } = req.params;
+
+    const { winningTeam, losingTeam, gameStatus } = req.body;
+
+    // Validation
+    if (!gameId || typeof gameId !== "string") {
+      return res.status(400).json({ message: "Invalid or missing game ID" });
+    }
+    if (!winningTeam || typeof winningTeam !== "object") {
+      return res
+        .status(400)
+        .json({ message: "Invalid or missing winning team" });
+    }
+    if (!losingTeam || typeof losingTeam !== "object") {
+      return res
+        .status(400)
+        .json({ message: "Invalid or missing losing team" });
+    }
+    if (gameStatus === undefined) {
+      return res.status(400).json({ message: "Missing status" });
+    }
+
+    if (typeof gameStatus !== "boolean") {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    // Check if the user is an admin
+    const user = await Auth.findById(req.user.id);
+    if (!user || !user.isAdmin) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    // Find the game and update its results
+    const game = await Game.findByIdAndUpdate(
+      gameId,
+      { winningTeam, losingTeam, gameStatus },
+      { new: true }
+    );
+
+    if (!game) {
+      return res.status(404).json({ message: "Game not found" });
+    }
+
+    res.status(200).json({
+      message: "Game results updated successfully",
+      game,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating game results",
+      error: error.message,
+    });
+  }
+});
+
+// Admin sets Bet status.
+app.patch("/set-bet-status/", authMiddleware, async (req, res) => {
+  try {
+    
+    const { betId } = req.query;
+    const { betStatus } = req.body;
+
+    // Validation
+    if (!betId || typeof betId !== "string") {
+      return res.status(400).json({ message: "Invalid or missing bet ID" });
+    }
+
+    if (!betStatus || typeof betStatus !== "string") {
+      return res.status(400).json({ message: "Invalid or missing bet ID" });
+    }
+
+    
+    
+
+    // Check if the user is an admin
+    const user = await Auth.findById(req.user.id);
+    if (!user || !user.isAdmin) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    
+
+    
+
+    // Find the bet and update its status
+    const bet = await Bet.findByIdAndUpdate(
+      betId,
+      { betStatus },
+      { new: true }
+    );
+
+    if (!bet) {
+      return res.status(404).json({ message: "bet not found" });
+    }
+
+    res.status(200).json({
+      message: "Bet Status updated successfully",
+      bet,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating game results",
+      error: error.message,
+    });
+  }
+});
 // Create a bet
 app.post("/create-bet", authMiddleware, async (req, res) => {
   try {
-    const { gameId, betAmount, betType } = req.body;
+    const { gameId, betAmount, betType, betOnTeam } = req.body;
 
     // Validation
     if (!gameId || typeof gameId !== "string") {
@@ -366,6 +499,10 @@ app.post("/create-bet", authMiddleware, async (req, res) => {
       return res.status(404).json({ message: "Game not found" });
     }
 
+    if (game.gameStatus === false) {
+      return res.status(400).json({ message: "Game is already over" });
+    }
+
     // Check if the user has enough balance in their wallet
     const wallet = await Wallet.findOne({ userId: req.user.id });
     if (!wallet || wallet.walletBalance < betAmount) {
@@ -378,6 +515,7 @@ app.post("/create-bet", authMiddleware, async (req, res) => {
       gameId,
       betAmount,
       betType,
+      betOnTeam,
       odds: game.odds,
       potentialWinnings: betAmount * game.odds,
     });
@@ -473,6 +611,108 @@ app.post("/deposit", authMiddleware, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Error depositing money",
+      error: error.message,
+    });
+  }
+});
+
+// Calculate payouts and update wallets
+app.post("/calculate-payouts", authMiddleware, async (req, res) => {
+  try {
+    const { gameId } = req.body;
+
+    // Validation
+    if (!gameId || typeof gameId !== "string") {
+      return res.status(400).json({ message: "Invalid or missing game ID" });
+    }
+
+    // Find the game
+    const game = await Game.findById(gameId);
+    if (!game) {
+      return res.status(404).json({ message: "Game not found" });
+    }
+
+    // Find all bets for the game
+    const bets = await Bet.find({ gameId }).populate("userId");
+    if (game.gameStatus === true) {
+      return res.status(400).json({ message: "Game is still ongoing" });
+    }
+
+    // Calculate payouts
+    for (const bet of bets) {
+      if (
+        bet.betType &&
+        bet.betType.toLowerCase() === "win" &&
+        bet.betOnTeam &&
+        game.winningTeam &&
+        game.winningTeam.team &&
+        bet.betOnTeam.toLowerCase() === game.winningTeam.team.toLowerCase()
+      ) {
+        const payout = bet.potentialWinnings;
+        const wallet = await Wallet.findOne({
+          userId: bet.userId._id || bet.userId,
+        });
+        if (wallet) {
+          wallet.walletBalance += payout;
+          await wallet.save();
+          bet.status = "won";
+        } else {
+          // Optionally log or handle missing wallet
+          bet.status = "won";
+        }
+      } else {
+        bet.status = "lost";
+      }
+      await bet.save();
+    }
+
+    const payoutResults = bets.map((bet) => ({
+      betId: bet._id,
+      userId: bet.userId._id,
+      betType: bet.betType,
+      status: bet.status,
+      payout: bet.status === "won" ? bet.potentialWinnings : 0,
+      potentialWinnings: bet.potentialWinnings,
+    }));
+
+    res.status(200).json({
+      message: "Payouts calculated successfully",
+      payouts: payoutResults,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error calculating payouts",
+      error: error.message,
+    });
+  }
+});
+
+
+
+
+// Combined endpoint for viewing bet history and results
+app.get("/my-bets", authMiddleware, async (req, res) => {
+  try {
+    const { summary } = req.query; // e.g., /my-bets?summary=true
+
+    const bets = await Bet.find({ userId: req.user.id }).populate("gameId");
+
+    if (summary === "true") {
+      // Return summarized results
+      const results = bets.map((bet) => ({
+        game: bet.gameId,
+        betAmount: bet.betAmount,
+        potentialWinnings: bet.potentialWinnings,
+        status: bet.status,
+      }));
+      return res.status(200).json({ message: "Bet results", results });
+    } else {
+      // Return full bet history
+      return res.status(200).json({ message: "Bet history", bets });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching bets",
       error: error.message,
     });
   }
