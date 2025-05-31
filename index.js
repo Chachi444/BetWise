@@ -428,7 +428,6 @@ app.patch("/set-game-results/:gameId", authMiddleware, async (req, res) => {
 // Admin sets Bet status.
 app.patch("/set-bet-status/", authMiddleware, async (req, res) => {
   try {
-    
     const { betId } = req.query;
     const { betStatus } = req.body;
 
@@ -441,18 +440,11 @@ app.patch("/set-bet-status/", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Invalid or missing bet ID" });
     }
 
-    
-    
-
     // Check if the user is an admin
     const user = await Auth.findById(req.user.id);
     if (!user || !user.isAdmin) {
       return res.status(403).json({ message: "Access denied" });
     }
-
-    
-
-    
 
     // Find the bet and update its status
     const bet = await Bet.findByIdAndUpdate(
@@ -469,7 +461,6 @@ app.patch("/set-bet-status/", authMiddleware, async (req, res) => {
       message: "Bet Status updated successfully",
       bet,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Error updating game results",
@@ -686,9 +677,6 @@ app.post("/calculate-payouts", authMiddleware, async (req, res) => {
     });
   }
 });
-
-
-
 
 // Combined endpoint for viewing bet history and results
 app.get("/my-bets", authMiddleware, async (req, res) => {
