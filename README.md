@@ -3,22 +3,22 @@
 
 ## Table of Contents
 
-- [Features](#features)
-- [Milestones](#milestones)
-- [Schemas](#schemas)
-- [API Endpoints](#api-endpoints)
+ [Features](#features)
+ [Milestones](#milestones)
+ [Schemas](#schemas)
+ [API Endpoints](#api-endpoints)
 
 
 
 ## Features
 
-- User registration and login with wallet balance
-- Admin can create games with odds
-- Users can place bets on available games
-- Bets are deducted from user wallets
-- Admin sets game results
-- Automatic payout calculation and wallet updates
-- Users can view bet history and results
+ User registration and login with wallet balance
+ Admin can create games with odds
+ Users can place bets on available games
+ Bets are deducted from user wallets
+ Admin sets game results
+ Automatic payout calculation and wallet updates
+ Users can view bet history and results
 
 
 
@@ -47,22 +47,26 @@
 
 ## Schemas
 
-- **Game:** teams, odds, result
-- **Bet:** user, game, outcome, stake, payout
+ **Game:** teams, odds, result
+ **Bet:** user, game, outcome, stake, payout
 
 
 
 ## API Endpoints
 
-- `POST /auth/register` — Register a new user
-- `POST /auth/login` — Login user
-- `POST /games` — Create a new game (admin only)
-- `GET /games` — List all games
-- `POST /bets` — Place a bet
-- `GET /bets` — View all bets (bet history)
-- `GET /bet-results` — View summarized bet results
-- `PATCH /games/:id/result` — Set game result (admin only)
-- `GET /wallet` — View wallet balance
+ `POST /auth/register` — Register a new user
+ `POST /auth/login` — Login user
+ `POST /games` — Create a new game (admin only)
+ `GET /games` — List all games
+ `POST /bets` — Place a bet
+ `GET /bets` — View all bets (bet history)
+ `GET /bet-results` — View summarized bet results
+ `PATCH /games/:id/result` — Set game result (admin only)
+ `GET /wallet` — View wallet balance
+ 
 
 
 
+# POSTMAN LINK
+
+`https://documenter.getpostman.com/view/44816262/2sB2x3msod`

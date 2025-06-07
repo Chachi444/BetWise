@@ -179,3 +179,5 @@ MIT
 **BetWise** — Project 5, Sports Betting Platform.
 
 
+# POSTMAN DOCUMENTATION LINK
+` https://documenter.getpostman.com/view/44816262/2sB2x3msod`
