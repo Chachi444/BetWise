@@ -19,6 +19,14 @@
  Admin sets game results
  Automatic payout calculation and wallet updates
  Users can view bet history and results
+ User profile management (update profile)
+ Bet notifications
+ Leaderboard for top users
+ Referral system for inviting friends
+ Admin panel for managing users
+ In-app chat/support messaging
+ Transaction history viewing
+ AI chatbot assistant for user queries
 
 
 
@@ -63,6 +71,14 @@
  `GET /bet-results` — View summarized bet results
  `PATCH /games/:id/result` — Set game result (admin only)
  `GET /wallet` — View wallet balance
+ `PATCH` - update user profile
+ `GET /notifications` — Get user notifications  
+ `GET /leaderboard` — View leaderboard  
+ `POST /refer` — Refer a friend  
+ `GET /admin/users` — Admin: view all users  
+ `POST /support` — Send support message  
+ `GET /transactions` — View transaction history  
+ `POST /ai-chat` — AI chatbot assistant  
  
 
 
