@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const axios = require("axios");
 const Auth = require("../Models/authModel");
 const Bet = require("../Models/betModel");
 const Game = require("../Models/gameModel");
 const { findBets, findWallets, findUsers, findGames } = require("../Service");
 const Wallet = require("../Models/walletModel");
-
 
 
 
@@ -661,6 +661,73 @@ const myBets = async (req, res) => {
 };
 
 
+const aiChat = async (req, res) => {
+  const { message } = req.body;
+  try {
+    const response = await axios.post(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        model: "openai/gpt-3.5-turbo", // or any other model listed on OpenRouter
+        messages: [{ role: "user", content: message }]
+      },
+      {
+        headers: {
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    res.json({ reply: response.data.choices[0].message.content });
+  } catch (error) {
+    res.status(500).json({ message: "AI error", error: error.message });
+  }
+};
+
+const updateUserProfile = async (req, res) => {
+  try {
+    const updates = req.body;
+    const user = await Auth.findByIdAndUpdate(req.user.id, updates, { new: true });
+    res.json({ message: "Profile updated", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating profile", error: error.message });
+  }
+};
+
+const getUserNotifications = async (req, res) => {
+  // Placeholder: implement notification logic
+  res.json({ notifications: [] });
+};
+
+const getLeaderboard = async (req, res) => {
+  // Placeholder: implement leaderboard logic
+  res.json({ leaderboard: [] });
+};
+
+
+const referFriend = async (req, res) => {
+  // Placeholder: implement referral logic
+  res.json({ message: "Referral sent!" });
+};
+
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) return next();
+  return res.status(403).json({ message: "Admin only" });
+};
+const getAllUsersAdmin = async (req, res) => {
+  const users = await Auth.find();
+  res.json({ users });
+};
+
+const sendSupportMessage = async (req, res) => {
+  // Placeholder: implement support logic
+  res.json({ message: "Support message sent!" });
+};
+
+const getTransactions = async (req, res) => {
+  // Placeholder: implement transaction logic
+  res.json({ transactions: [] });
+};
+
 module.exports = {
     handleUserSignUp,
     getAllUsers,
@@ -680,6 +747,17 @@ module.exports = {
     viewBetResults,
     depositMoney,
     calculatePayouts,
-    myBets
+    myBets,
+    aiChat,
+    updateUserProfile,
+    getUserNotifications,
+    getLeaderboard,
+    referFriend,
+    isAdmin,
+    getAllUsersAdmin,
+    sendSupportMessage,
+    getTransactions
+
    
-}
+   
+};

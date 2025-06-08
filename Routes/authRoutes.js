@@ -1,5 +1,6 @@
 const express = require("express");
-const { handleForgotPassword, handleResetPassword, handleUserLogin, handleUserSignUp, getAllUsers, getAllWallets, walletsByWalletId, myWallet, createGame, getAllGames, updateGameResults, updateBetStatus, createBet, getAllBets, getBetById, viewBetResults, depositMoney, calculatePayouts, myBets } = require("../Controllers");
+require('dotenv').config();
+const { handleForgotPassword, handleResetPassword, handleUserLogin, handleUserSignUp, getAllUsers, getAllWallets, walletsByWalletId, myWallet, createGame, getAllGames, updateGameResults, updateBetStatus, createBet, getAllBets, getBetById, viewBetResults, depositMoney, calculatePayouts, myBets, aiChat, updateUserProfile, getUserNotifications, getLeaderboard, referFriend, isAdmin, getAllUsersAdmin, sendSupportMessage, getTransactions } = require("../Controllers");
 const { validateRegistration, authorization } = require("../middleware");
 
 
@@ -24,6 +25,13 @@ router.get("/view-bet-results", viewBetResults);
 router.post("/deposit-money", authorization, depositMoney);
 router.get("/calculate-payouts", calculatePayouts);
 router.get("/my-bets", myBets);
-
+router.post("/ai-chat", aiChat);
+router.patch("/profile", authorization, updateUserProfile);
+router.get("/notifications", authorization, getUserNotifications);
+router.get("/leaderboard", getLeaderboard);
+router.post("/refer", authorization, referFriend);
+router.get("/admin/users", authorization, isAdmin, getAllUsersAdmin);
+router.post("/support", authorization, sendSupportMessage);
+router.get("/transactions", authorization, getTransactions);
 
 module.exports = router;

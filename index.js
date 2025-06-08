@@ -10,6 +10,8 @@ const Wallet = require("./Models/walletModel");
 const Bet = require("./Models/betModel");
 const Game = require("./Models/gameModel");
 const routes = require("./Routes");
+
+
 // const nodemailer = require("nodemailer");
 // const { sendForgotPasswordEmail, validEmail } = require("./sendMail");
 // const { getAllUsers } = require("./Controllers");
@@ -21,6 +23,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+
 
 const PORT = process.env.PORT || 8080;
 
@@ -36,4 +40,4 @@ app.get("/", (req, res) => {
 });
 
 
-app.use(routes)
+app.use(routes);
