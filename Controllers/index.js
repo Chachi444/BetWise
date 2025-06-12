@@ -723,10 +723,7 @@ const getTransactions = async (req, res) => {
   res.json({ transactions: [] });
 };
 
-// paystack
-// ...existing code...
-
-// PAYSTACK PAYMENT CONTROLLERS
+// Paystack integration
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 const paystackAxios = axios.create({
@@ -737,25 +734,27 @@ const paystackAxios = axios.create({
   },
 });
 
+
+
 // Initialize Paystack transaction
 const initializePaystackPayment = async (req, res) => {
   try {
-    const { amount, email } = req.body;
-    if (!amount || !email) {
-      return res.status(400).json({ message: "Amount and email are required" });
-    }
-    const response = await paystackAxios.post("/transaction/initialize", {
-      amount: amount * 100, // Paystack expects amount in kobo
-      email,
-    });
+     const { amount, email } = req.body;
+     if (!amount || !email) {
+       return res.status(400).json({ message: "Amount and email are required" });
+     }
+     const response = await paystackAxios.post("/transaction/initialize", {
+       amount: amount * 100, // Paystack expects amount in kobo
+       email,
+     });
+
+
     res.json(response.data);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Paystack init error",
-        error: error.response?.data || error.message,
-      });
+    res.status(500).json({
+      message: "Paystack init error",
+      error: error.response?.data || error.message,
+    });
   }
 };
 
@@ -766,19 +765,18 @@ const verifyPaystackPayment = async (req, res) => {
     if (!reference) {
       return res.status(400).json({ message: "Reference is required" });
     }
-    const response = await paystackAxios.get(
-      `/transaction/verify/${reference}`
-    );
-    res.json(response.data);
+     const response = await paystackAxios.get(
+       `/transaction/verify/${reference}`
+     );
+
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Paystack verify error",
-        error: error.response?.data || error.message,
-      });
+    res.status(500).json({
+      message: "Paystack verify error",
+      error: error.response?.data || error.message,
+    });
   }
 };
+
 
 module.exports = {
   handleUserSignUp,
