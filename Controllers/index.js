@@ -7,11 +7,6 @@ const Game = require("../Models/gameModel");
 const { findBets, findWallets, findUsers, findGames } = require("../Service");
 const Wallet = require("../Models/walletModel");
 
-
-
-
-
-
 const handleUserSignUp = async (req, res) => {
   try {
     const { email, username, firstName, lastName, password, state, isAdmin } =
@@ -103,21 +98,20 @@ const handleUserSignUp = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
 
 const getAllUsers = async (req, res) => {
+  console.log(req.user);
 
-console.log(req.user);
+  const allUser = await Auth.find(); // or findUser()
 
-  const allUser = await Auth.find() // or findUser()
-    
   res.status(200).json({
-      message: "All users fetched successfully",
-       allUser
-  })
- }
+    message: "All users fetched successfully",
+    allUser,
+  });
+};
 
- const handleUserLogin = async (req, res) => {
+const handleUserLogin = async (req, res) => {
   const { email, username, password } = req.body;
 
   const user = await Auth.findOne({ email }); //.select("-password");
@@ -422,7 +416,6 @@ const updateBetStatus = async (req, res) => {
   }
 };
 
-
 const createBet = async (req, res) => {
   try {
     const { gameId, betAmount, betType, betOnTeam } = req.body;
@@ -660,7 +653,6 @@ const myBets = async (req, res) => {
   }
 };
 
-
 const aiChat = async (req, res) => {
   const { message } = req.body;
   try {
@@ -668,13 +660,13 @@ const aiChat = async (req, res) => {
       "https://openrouter.ai/api/v1/chat/completions",
       {
         model: "openai/gpt-3.5-turbo", // or any other model listed on OpenRouter
-        messages: [{ role: "user", content: message }]
+        messages: [{ role: "user", content: message }],
       },
       {
         headers: {
-          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json"
-        }
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     res.json({ reply: response.data.choices[0].message.content });
@@ -686,10 +678,14 @@ const aiChat = async (req, res) => {
 const updateUserProfile = async (req, res) => {
   try {
     const updates = req.body;
-    const user = await Auth.findByIdAndUpdate(req.user.id, updates, { new: true });
+    const user = await Auth.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+    });
     res.json({ message: "Profile updated", user });
   } catch (error) {
-    res.status(500).json({ message: "Error updating profile", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating profile", error: error.message });
   }
 };
 
@@ -702,7 +698,6 @@ const getLeaderboard = async (req, res) => {
   // Placeholder: implement leaderboard logic
   res.json({ leaderboard: [] });
 };
-
 
 const referFriend = async (req, res) => {
   // Placeholder: implement referral logic
@@ -728,36 +723,92 @@ const getTransactions = async (req, res) => {
   res.json({ transactions: [] });
 };
 
-module.exports = {
-    handleUserSignUp,
-    getAllUsers,
-    handleUserLogin,
-    handleForgotPassword,
-    handleResetPassword,
-    getAllWallets,
-    walletsByWalletId,
-    myWallet,
-    createGame,
-    getAllGames,
-    updateGameResults,
-    updateBetStatus,
-    createBet,
-    getAllBets,
-    getBetById,
-    viewBetResults,
-    depositMoney,
-    calculatePayouts,
-    myBets,
-    aiChat,
-    updateUserProfile,
-    getUserNotifications,
-    getLeaderboard,
-    referFriend,
-    isAdmin,
-    getAllUsersAdmin,
-    sendSupportMessage,
-    getTransactions
+// paystack
+// ...existing code...
 
-   
-   
+// PAYSTACK PAYMENT CONTROLLERS
+
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
+const paystackAxios = axios.create({
+  baseURL: "https://api.paystack.co",
+  headers: {
+    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+    "Content-Type": "application/json",
+  },
+});
+
+// Initialize Paystack transaction
+const initializePaystackPayment = async (req, res) => {
+  try {
+    const { amount, email } = req.body;
+    if (!amount || !email) {
+      return res.status(400).json({ message: "Amount and email are required" });
+    }
+    const response = await paystackAxios.post("/transaction/initialize", {
+      amount: amount * 100, // Paystack expects amount in kobo
+      email,
+    });
+    res.json(response.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Paystack init error",
+        error: error.response?.data || error.message,
+      });
+  }
+};
+
+// Verify Paystack transaction
+const verifyPaystackPayment = async (req, res) => {
+  try {
+    const { reference } = req.query;
+    if (!reference) {
+      return res.status(400).json({ message: "Reference is required" });
+    }
+    const response = await paystackAxios.get(
+      `/transaction/verify/${reference}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Paystack verify error",
+        error: error.response?.data || error.message,
+      });
+  }
+};
+
+module.exports = {
+  handleUserSignUp,
+  getAllUsers,
+  handleUserLogin,
+  handleForgotPassword,
+  handleResetPassword,
+  getAllWallets,
+  walletsByWalletId,
+  myWallet,
+  createGame,
+  getAllGames,
+  updateGameResults,
+  updateBetStatus,
+  createBet,
+  getAllBets,
+  getBetById,
+  viewBetResults,
+  depositMoney,
+  calculatePayouts,
+  myBets,
+  aiChat,
+  updateUserProfile,
+  getUserNotifications,
+  getLeaderboard,
+  referFriend,
+  isAdmin,
+  getAllUsersAdmin,
+  sendSupportMessage,
+  getTransactions,
+  initializePaystackPayment,
+  verifyPaystackPayment,
 };
