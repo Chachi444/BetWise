@@ -765,10 +765,13 @@ const verifyPaystackPayment = async (req, res) => {
     if (!reference) {
       return res.status(400).json({ message: "Reference is required" });
     }
-     const response = await paystackAxios.get(
-       `/transaction/verify/${reference}`
-     );
-
+    const response = await paystackAxios.get(
+      `/transaction/verify/${reference}`
+    );
+    if (response.data.status === false) {
+      return res.status(400).json({ message: "Transaction not found" });
+    }
+    res.json(response.data);
   } catch (error) {
     res.status(500).json({
       message: "Paystack verify error",
@@ -776,7 +779,6 @@ const verifyPaystackPayment = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   handleUserSignUp,
