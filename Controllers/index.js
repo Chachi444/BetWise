@@ -734,20 +734,17 @@ const paystackAxios = axios.create({
   },
 });
 
-
-
 // Initialize Paystack transaction
 const initializePaystackPayment = async (req, res) => {
   try {
-     const { amount, email } = req.body;
-     if (!amount || !email) {
-       return res.status(400).json({ message: "Amount and email are required" });
-     }
-     const response = await paystackAxios.post("/transaction/initialize", {
-       amount: amount * 100, // Paystack expects amount in kobo
-       email,
-     });
-
+    const { amount, email } = req.body;
+    if (!amount || !email) {
+      return res.status(400).json({ message: "Amount and email are required" });
+    }
+    const response = await paystackAxios.post("/transaction/initialize", {
+      amount: amount * 100, // Paystack expects amount in kobo
+      email,
+    });
 
     res.json(response.data);
   } catch (error) {
