@@ -1,0 +1,101 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #27ae60;
+  padding: 20px 40px;
+  color: #fff;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 2rem;
+  margin-right: 30px;
+}
+
+.navbar-center {
+  display: flex;
+  align-items: center;
+    flex-grow: 1;
+}
+
+.navbar-center a {
+  margin: 0 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.navbar-center a:hover {
+  color: #145a32; /* Dark green on hover */
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+}
+
+.balance, .user {
+  margin: 0 8px;
+    color: #fff;
+}
+
+/* Shared button styles */
+.deposit-btn,
+.withdraw-btn,
+.logout-btn {
+  border: none;
+  border-radius: 7px;
+  padding: 8px 18px;
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Individual button colors */
+.deposit-btn {
+  background: #fff;
+  color: #27ae60;
+}
+.deposit-btn:hover {
+  background: #219150;
+}
+
+.withdraw-btn {
+  background: #c0392b;
+  color: #fff;
+}
+.withdraw-btn:hover {
+  background: #a93226;
+}
+
+.logout-btn {
+  background: #fff;
+  color: #27ae60;
+}
+.logout-btn:hover {
+  background: #145a32;
+  color: #fff;
+}

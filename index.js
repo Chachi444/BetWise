@@ -12,8 +12,8 @@ const Game = require("./Models/gameModel");
 const routes = require("./Routes");
 
 
-// const nodemailer = require("nodemailer");
-// const { sendForgotPasswordEmail, validEmail } = require("./sendMail");
+ const nodemailer = require("nodemailer");
+ const { sendForgotPasswordEmail, validEmail } = require("./sendMail");
 // const { getAllUsers } = require("./Controllers");
 
 
@@ -36,7 +36,7 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to my Betwise Sports Betting Platform" });
+  res.status(200).json({ message: "Welcome to Betwise Sports Betting Platform. Your ultimate sports betting platform." });
 });
 
 

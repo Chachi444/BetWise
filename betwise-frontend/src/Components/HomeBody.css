@@ -1,0 +1,79 @@
+.home-body {
+  padding: 40px;
+  background: #fff;
+  min-height: 80vh;
+  color: #145a32; /* dark green for text */
+}
+
+.welcome-carousel {
+  background: #27ae60; /* green */
+  color: #fff;
+  border-radius: 16px;
+  padding: 40px 20px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(20,90,50,0.08);
+  transition: background 0.5s;
+}
+
+.welcome-carousel h1 {
+  margin-bottom: 10px;
+  font-size: 2.2rem;
+}
+
+.featured-matches {
+  margin-top: 20px;
+}
+
+.featured-matches h2 {
+  color: #145a32;
+}
+
+.matches-list {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.match-card {
+  background: #e9f7ef; /* light green */
+  color: #145a32;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(20,90,50,0.05);
+  min-width: 150px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Main layout responsiveness */
+@media (max-width: 900px) {
+  .main-layout {
+    flex-direction: column;
+    padding: 8px !important;
+  }
+  .sidebar {
+    width: 100% !important;
+    margin: 0 0 16px 0 !important;
+  }
+  .main-content {
+    padding: 0 !important;
+    gap: 12px !important;
+  }
+  .bet-slip {
+    min-width: 0 !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-top: 16px !important;
+  }
+  .footer-content {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 24px !important;
+    padding: 0 8px !important;
+  }
+  table {
+    font-size: 14px !important;
+  }
+}

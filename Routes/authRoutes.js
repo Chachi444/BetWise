@@ -1,6 +1,14 @@
 const express = require("express");
 require('dotenv').config();
-const { handleForgotPassword, handleResetPassword, handleUserLogin, handleUserSignUp, getAllUsers, getAllWallets, walletsByWalletId, myWallet, createGame, getAllGames, updateGameResults, updateBetStatus, createBet, getAllBets, getBetById, viewBetResults, depositMoney, calculatePayouts, myBets, aiChat, updateUserProfile, getUserNotifications, getLeaderboard, referFriend, isAdmin, getAllUsersAdmin, sendSupportMessage, getTransactions, initializePaystackPayment, verifyPaystackPayment } = require("../Controllers");
+const { handleForgotPassword, handleResetPassword, handleUserLogin, handleUserSignUp,
+     getAllUsers, getAllWallets, walletsByWalletId, myWallet, createGame, 
+     getAllGames, updateGameResults, updateBetStatus, createBet, 
+     getAllBets, getBetById, viewBetResults, depositMoney,
+      calculatePayouts, myBets, aiChat, updateUserProfile, 
+      getUserNotifications, getLeaderboard, referFriend, 
+      isAdmin, getAllUsersAdmin, sendSupportMessage,
+       getTransactions, initializePaystackPayment, 
+       verifyPaystackPayment } = require("../Controllers");
 const { validateRegistration, authorization } = require("../middleware");
 
 
@@ -11,7 +19,7 @@ router.post("/login", handleUserLogin);
 router.post("/forgot-password", handleForgotPassword);
 router.patch("/reset-password", authorization, handleResetPassword);
 router.get("/users", authorization, getAllUsers);
-router.get("/wallets",  getAllWallets);
+router.get("/wallets",  getAllWallets);       
 router.get("/wallets/:id", walletsByWalletId);
 router.get("/my-wallet", authorization, myWallet);
 router.post("/create-game",  createGame);
@@ -34,8 +42,11 @@ router.get("/admin/users", authorization, isAdmin, getAllUsersAdmin);
 router.post("/support",  sendSupportMessage);
 router.get("/transactions",  getTransactions);
 
+
 // paystack
 router.post("/paystack/initialize", authorization, initializePaystackPayment);
 router.get("/paystack/verify", verifyPaystackPayment);
+
+
 
 module.exports = router;

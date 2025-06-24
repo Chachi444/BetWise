@@ -6,6 +6,7 @@ const Bet = require("../Models/betModel");
 const Game = require("../Models/gameModel");
 const { findBets, findWallets, findUsers, findGames } = require("../Service");
 const Wallet = require("../Models/walletModel");
+const sendForgotPasswordEmail = require("../utils/sendForgotPasswordEmail");
 
 const handleUserSignUp = async (req, res) => {
   try {
@@ -777,6 +778,24 @@ const verifyPaystackPayment = async (req, res) => {
   }
 };
 
+
+// const getLiveMatches = async (req, res) => {
+//   try {
+//     const API_KEY = process.env.ALLSPORTS_API_KEY; // Store your key in .env
+//     const url = `https://apiv2.allsportsapi.com/football/?met=Livescore&APIkey=${API_KEY}`;
+//     const response = await axios.get(url);
+//     res.json(response.data);
+//   } catch (error) {
+//     res.status(500).json({ message: "Failed to fetch live matches", error: error.message });
+//   }
+// };
+
+// live matches endpoints
+
+
+
+
+
 module.exports = {
   handleUserSignUp,
   getAllUsers,
@@ -808,4 +827,5 @@ module.exports = {
   getTransactions,
   initializePaystackPayment,
   verifyPaystackPayment,
+
 };
