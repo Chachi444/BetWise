@@ -20,9 +20,13 @@ const routes = require("./Routes");
 
 const app = express();
 
+app.use(cors({
+  origin: 'https://your-frontend-domain.com', // Replace with your frontend URL
+  credentials: true
+}));
+
 
 app.use(express.json());
-app.use(cors());
 
 
 
