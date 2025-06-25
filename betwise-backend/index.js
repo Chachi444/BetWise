@@ -21,13 +21,12 @@ const routes = require("./Routes");
 const app = express();
 
 app.use(cors({
-  origin: 'https://your-frontend-domain.com', // Replace with your frontend URL
+  origin: 'https://betws.netlify.app', // Replace with your frontend URL
   credentials: true
 }));
 
 
 app.use(express.json());
-
 
 
 const PORT = process.env.PORT || 8080;
