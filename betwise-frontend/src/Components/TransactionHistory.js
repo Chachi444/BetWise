@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; 
 
 const TransactionHistory = () => {
   const [transactions, setTransactions] = useState([]);
@@ -7,7 +8,7 @@ const TransactionHistory = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    axios.get("https://betwise-mjyi.onrender.com/transactions", {
+    axios.get(`${API_URL}/transactions`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setTransactions(res.data.transactions || []))

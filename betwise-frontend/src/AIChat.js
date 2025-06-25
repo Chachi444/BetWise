@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL } from "./api"; 
 
 const AIChat = () => {
   const [messages, setMessages] = useState([]);
@@ -13,7 +14,7 @@ const AIChat = () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await axios.post("https://betwise-mjyi.onrender.com/ai-chat", { message: input }, {
+      const res = await axios.post(`${API_URL}/ai-chat`, { message: input }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessages(msgs => [...msgs, { role: "ai", content: res.data.reply }]);

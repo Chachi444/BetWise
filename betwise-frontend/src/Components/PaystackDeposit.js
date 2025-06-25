@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; 
 
 const PaystackDeposit = () => {
   const [amount, setAmount] = useState("");
@@ -21,7 +22,7 @@ const PaystackDeposit = () => {
     try {
       // 1. Initialize transaction on backend
       const res = await axios.post(
-        "http://localhost:8000/paystack/initialize",
+        `${API_URL}/paystack/initialize`,
         { amount: Number(amount), email: user.email },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -37,7 +38,7 @@ const PaystackDeposit = () => {
           // 3. Verify transaction on backend
           try {
             await axios.get(
-              `https://betwise-mjyi.onrender.com//paystack/verify?reference=${response.reference}`
+              `${API_URL}///paystack/verify?reference=${response.reference}`
             );
             setMessage("Deposit successful!");
             setAmount("");

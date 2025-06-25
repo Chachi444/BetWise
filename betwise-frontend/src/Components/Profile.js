@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; 
 
 const Profile = () => {
   const [profile, setProfile] = useState({ email: "", firstName: "", lastName: "", state: "" });
@@ -19,7 +20,7 @@ const Profile = () => {
     const token = localStorage.getItem("token");
     if (!token) return setMessage("You must be logged in.");
     try {
-      await axios.patch("https://betwise-mjyi.onrender.com/profile", profile, {
+      await axios.patch(`${API_URL}/profile`, profile, {
         headers: { Authorization: `Bearer ${token}` }
             });
       setMessage("Profile updated!");

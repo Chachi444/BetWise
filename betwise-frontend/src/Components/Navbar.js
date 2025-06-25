@@ -4,6 +4,7 @@ import axios from "axios";
 import './Navbar.css';
 import logo from '../assets/logo.png';
 import { FaBell, FaUser, FaSignOutAlt, FaPlusCircle, FaMinusCircle } from "react-icons/fa"; // For icons
+import { API_URL } from "../api"; 
 
 const Navbar = () => {
   const [balance, setBalance] = useState(0);
@@ -15,7 +16,7 @@ const Navbar = () => {
     if (!token) return;
 
     // Fetch wallet balance
-    axios.get("https://betwise-mjyi.onrender.com/my-wallet", {
+    axios.get(`${API_URL}/my-wallet`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setBalance(res.data.wallet.walletBalance))

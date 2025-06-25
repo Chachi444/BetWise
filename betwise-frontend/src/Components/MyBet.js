@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { API_URL } from "../api"; 
 const MyBets = () => {
   const [bets, setBets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("https://betwise-mjyi.onrender.com/my-bets", {
+    axios.get(`${API_URL}/my-bets`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setBets(res.data.bets || []))

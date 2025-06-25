@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle, FaFacebook } from "react-icons/fa"; 
+import { API_URL } from "../api"; 
 
-const API_URL = "https://betwise-mjyi.onrender.com/sign-up";
+const SIGN_UP_URL = `${API_URL}/sign-up`;
 
 const SignUpPage = ({ onSignUp }) => {
   const [form, setForm] = useState({

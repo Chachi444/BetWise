@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle, FaFacebook } from "react-icons/fa"; 
+import { API_URL } from "../api"; // Adjust the import based on your project structure
 
-const API_URL = "https://betwise-mjyi.onrender.com//login";
+const LOGIN_URL = `${API_URL}/login`;
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState("");

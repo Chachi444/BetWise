@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; 
 
 const Support = () => {
   const [message, setMessage] = useState("");
@@ -13,7 +14,7 @@ const Support = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://betwise-mjyi.onrender.com/support",
+        `${API_URL}/support`,
         { message },
         { headers: { Authorization: `Bearer ${token}` } }
       );

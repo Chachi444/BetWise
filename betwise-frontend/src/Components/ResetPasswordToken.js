@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../api"; 
 
 const ResetPasswordToken = () => {
   const { token } = useParams();
@@ -10,7 +11,7 @@ const ResetPasswordToken = () => {
   const handleReset = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://betwise-mjyi.onrender.com/reset-password", { token, password });
+      await axios.post(`${API_URL}/reset-password`, { token, password });
       setMessage("Password reset successful! You can now log in.");
     } catch {
       setMessage("Reset failed or link expired.");

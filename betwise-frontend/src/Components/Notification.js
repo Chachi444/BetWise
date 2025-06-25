@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; 
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("https://betwise-mjyi.onrender.com/notifications", {
+    axios.get(`${API_URL}/notifications`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setNotifications(res.data.notifications || []));
   }, []);

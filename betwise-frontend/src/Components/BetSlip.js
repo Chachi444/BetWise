@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api";
 
 const BetSlip = ({ game }) => {
   const [betAmount, setBetAmount] = useState("");
@@ -19,7 +20,7 @@ const BetSlip = ({ game }) => {
       return;
     } 
     try {
-      await axios.post("https://betwise-mjyi.onrender.com/create-bet", {
+      await axios.post(`${API_URL}/create-bet`, {
         gameId: game._id,
         betAmount: Number(betAmount),
         betOnTeam

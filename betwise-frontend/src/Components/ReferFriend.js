@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { API_URL } from "../api"; 
 const ReferFriend = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -9,7 +9,7 @@ const ReferFriend = () => {
     setMessage("");
     const token = localStorage.getItem("token");
     try {
-      await axios.post("https://betwise-mjyi.onrender.com/refer-friend", { email }, {
+      await axios.post(`${API_URL}/refer-friend`, { email }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage("Referral sent!");

@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; 
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+
   const handleRequest = async (e) => {
     e.preventDefault();
     setMessage("");
     setLoading(true);
     try {
-      await axios.post("https://betwise-mjyi.onrender.com/forget-password", { email });
+      await axios.post(`${API_URL}/forget-password`, { email });
       setMessage("If this email exists, a reset link has been sent.");
     } catch {
       setMessage("If this email exists, a reset link has been sent.");

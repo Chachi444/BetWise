@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL} from "../api";
 
 const ManualDeposit = () => {
   const [amount, setAmount] = useState("");
@@ -18,7 +19,7 @@ const ManualDeposit = () => {
     }
     try {
       await axios.post(
-        "https://betwise-mjyi.onrender.com/deposit-money",
+        `${API_URL}/deposit-money`  ,
         { amount: Number(amount) },
         { headers: { Authorization: `Bearer ${token}` } }
       );

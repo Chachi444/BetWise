@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; // Adjust the import based on your project structure
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("https://betwise-mjyi.onrender.com/leaderboard", {
+    axios.get(`${API_URL}/leaderboard`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setLeaderboard(res.data.leaderboard || []));
   }, []);
