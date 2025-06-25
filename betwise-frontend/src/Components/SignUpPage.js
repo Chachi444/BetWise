@@ -28,7 +28,7 @@ const SignUpPage = ({ onSignUp }) => {
     setError("");
     try {
       await axios.post(SIGN_UP_URL, { ...form, isAdmin: false });
-      onSignUp && onSignUp();
+      onSignUp && onSignUp(); 
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Sign up failed");
