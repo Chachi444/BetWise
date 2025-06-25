@@ -17,7 +17,7 @@ const LoginPage = ({ onLogin }) => {
     e.preventDefault();
     setError("");
     try {
-      const res = await axios.post(API_URL, { email, password });
+      const res = await axios.post(LOGIN_URL, { email, password });
       onLogin && onLogin(res.data);
       navigate("/home");
     } catch (err) {

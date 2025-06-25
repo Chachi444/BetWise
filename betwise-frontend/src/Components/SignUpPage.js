@@ -27,7 +27,7 @@ const SignUpPage = ({ onSignUp }) => {
     e.preventDefault();
     setError("");
     try {
-      await axios.post(API_URL, { ...form, isAdmin: false });
+      await axios.post(SIGN_UP_URL, { ...form, isAdmin: false });
       onSignUp && onSignUp();
       navigate("/login");
     } catch (err) {
