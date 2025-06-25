@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-dotenv.config(); // <-- Make sure this is called right after requiring dotenv
+dotenv.config(); 
 const Auth = require("./Models/authModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
