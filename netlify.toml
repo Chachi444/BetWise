@@ -2,6 +2,10 @@
   base = "betwise-frontend"
   command = "npm run build"
   publish = "build"
+  
+[build.environment]
+  CI = "false"
+
 
 [functions]
   directory = "netlify/functions"
