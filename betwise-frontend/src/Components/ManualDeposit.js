@@ -18,7 +18,7 @@ const ManualDeposit = () => {
     }
     try {
       await axios.post(
-        "http://localhost:8000/deposit-money",
+        "https://betwise-mjyi.onrender.com/deposit-money",
         { amount: Number(amount) },
         { headers: { Authorization: `Bearer ${token}` } }
       );

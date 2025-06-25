@@ -7,7 +7,7 @@ const MyBets = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("http://localhost:8000/my-bets", {
+    axios.get("https://betwise-mjyi.onrender.com/my-bets", {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setBets(res.data.bets || []))

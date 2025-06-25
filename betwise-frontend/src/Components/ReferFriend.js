@@ -9,7 +9,7 @@ const ReferFriend = () => {
     setMessage("");
     const token = localStorage.getItem("token");
     try {
-      await axios.post("http://localhost:8000/refer-friend", { email }, {
+      await axios.post("https://betwise-mjyi.onrender.com/refer-friend", { email }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage("Referral sent!");

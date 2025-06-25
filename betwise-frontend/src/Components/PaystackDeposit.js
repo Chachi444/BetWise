@@ -37,7 +37,7 @@ const PaystackDeposit = () => {
           // 3. Verify transaction on backend
           try {
             await axios.get(
-              `http://localhost:8000/paystack/verify?reference=${response.reference}`
+              `https://betwise-mjyi.onrender.com//paystack/verify?reference=${response.reference}`
             );
             setMessage("Deposit successful!");
             setAmount("");

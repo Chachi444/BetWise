@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle, FaFacebook } from "react-icons/fa"; 
 
-const API_URL = "http://localhost:8000/sign-up";
+const API_URL = "https://betwise-mjyi.onrender.com/sign-up";
 
 const SignUpPage = ({ onSignUp }) => {
   const [form, setForm] = useState({

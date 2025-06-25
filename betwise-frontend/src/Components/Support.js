@@ -13,7 +13,7 @@ const Support = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:8000/support",
+        "https://betwise-mjyi.onrender.com/support",
         { message },
         { headers: { Authorization: `Bearer ${token}` } }
       );

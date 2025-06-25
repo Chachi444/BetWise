@@ -17,9 +17,9 @@ const BetSlip = ({ game }) => {
     if (!betOnTeam) {
       setMessage("Please select a team.");
       return;
-    }
+    } 
     try {
-      await axios.post("http://localhost:8000/create-bet", {
+      await axios.post("https://betwise-mjyi.onrender.com/create-bet", {
         gameId: game._id,
         betAmount: Number(betAmount),
         betOnTeam

@@ -7,7 +7,7 @@ const TransactionHistory = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    axios.get("http://localhost:8000/transactions", {
+    axios.get("https://betwise-mjyi.onrender.com/transactions", {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setTransactions(res.data.transactions || []))

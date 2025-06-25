@@ -10,7 +10,7 @@ const ResetPasswordToken = () => {
   const handleReset = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8000/reset-password", { token, password });
+      await axios.post("https://betwise-mjyi.onrender.com/reset-password", { token, password });
       setMessage("Password reset successful! You can now log in.");
     } catch {
       setMessage("Reset failed or link expired.");

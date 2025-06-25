@@ -11,7 +11,7 @@ const ResetPassword = () => {
     setMessage("");
     setLoading(true);
     try {
-      await axios.post("http://localhost:8000/forget-password", { email });
+      await axios.post("https://betwise-mjyi.onrender.com/forget-password", { email });
       setMessage("If this email exists, a reset link has been sent.");
     } catch {
       setMessage("If this email exists, a reset link has been sent.");

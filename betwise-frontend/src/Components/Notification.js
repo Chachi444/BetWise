@@ -5,7 +5,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("http://localhost:8000/notifications", {
+    axios.get("https://betwise-mjyi.onrender.com/notifications", {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setNotifications(res.data.notifications || []));
   }, []);

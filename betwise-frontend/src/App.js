@@ -17,15 +17,16 @@ import ResetPassword from "./Components/ResetPassword";
 import ResetPasswordToken from "./Components/ResetPasswordToken";
 import Profile from "./Components/Profile";
 import Transactions from "./Components/TransactionHistory";
-import Logout from "./Components/Logout"; // Uncomment if you have a logout component
-import MyBets from "./Components/MyBet"; // Uncomment if you have a MyBets component
-import Notifications from "./Components/Notification"; // Uncomment if you have a Notifications component
-import Leaderboard from "./Components/Leaderboard"; // Uncomment if you have a Leaderboard component
-import ReferFriend from "./Components/ReferFriend"; // Uncomment if you have a ReferFriend component
-import AIChat from "./AIChat"; // Import the AIChat component
+import Logout from "./Components/Logout"; 
+import MyBets from "./Components/MyBet"; 
+import Notifications from "./Components/Notification"; 
+import Leaderboard from "./Components/Leaderboard"; 
+import ReferFriend from "./Components/ReferFriend"; 
+import AIChat from "./AIChat";
 import Support from "./Components/Support";
-import SportPage from "./Components/SportPage"; // Uncomment if you have a SportPage component
+import SportPage from "./Components/SportPage"; 
 import WithdrawPage from "./Components/WithdrawPage";
+
 
 const soccerMatches = [
   {

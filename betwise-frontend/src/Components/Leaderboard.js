@@ -5,7 +5,7 @@ const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("http://localhost:8000/leaderboard", {
+    axios.get("https://betwise-mjyi.onrender.com/leaderboard", {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setLeaderboard(res.data.leaderboard || []));
   }, []);

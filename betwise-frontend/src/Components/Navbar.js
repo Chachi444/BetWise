@@ -15,7 +15,7 @@ const Navbar = () => {
     if (!token) return;
 
     // Fetch wallet balance
-    axios.get("http://localhost:8000/my-wallet", {
+    axios.get("https://betwise-mjyi.onrender.com/my-wallet", {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setBalance(res.data.wallet.walletBalance))

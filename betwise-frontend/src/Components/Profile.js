@@ -19,9 +19,9 @@ const Profile = () => {
     const token = localStorage.getItem("token");
     if (!token) return setMessage("You must be logged in.");
     try {
-      await axios.patch("http://localhost:8000/profile", profile, {
+      await axios.patch("https://betwise-mjyi.onrender.com/profile", profile, {
         headers: { Authorization: `Bearer ${token}` }
-      });
+            });
       setMessage("Profile updated!");
     } catch (err) {
       setMessage(err.response?.data?.message || "Update failed");
