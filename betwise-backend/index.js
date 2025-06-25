@@ -21,7 +21,7 @@ const routes = require("./Routes");
 const app = express();
 
 app.use(cors({
-  origin: 'https://betws.netlify.app', // Replace with your frontend URL
+  origin: ['http://localhost:3000', 'https://betws.netlify.app'], 
   credentials: true
 }));
 
